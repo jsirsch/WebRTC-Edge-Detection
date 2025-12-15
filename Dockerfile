@@ -5,10 +5,10 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # 1. Install system dependencies required for OpenCV and AioRTC
-# - libgl1-mesa-glx / libglib2.0-0: Required by OpenCV
+# - libgl1 / libglib2.0-0: Required by OpenCV
 # - libavdevice-dev / libavfilter-dev / opus / vpx: Required by AioRTC/FFmpeg
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     libavdevice-dev \
     libavfilter-dev \
