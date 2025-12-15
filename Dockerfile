@@ -25,6 +25,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY server.py .
 COPY index.html .
 
+ENV PYTHONUNBUFFERED=1
+
 # 4. Expose the signaling port (TCP)
 EXPOSE 8080
 # Note: WebRTC also uses random UDP ports for media, see "How to Run" below.
