@@ -5,6 +5,7 @@ import logging
 import os
 import ssl
 import uuid
+import socket
 
 import cv2
 from aiohttp import web
@@ -82,6 +83,17 @@ async def offer(request):
     answer = await pc.createAnswer()
     await pc.setLocalDescription(answer)
 
+    if os.environ.get("FORCE_LOCALHOST") == "true":
+        print("DEBUG: Applying localhost patch for Mac/Docker")
+        container_ip = socket.gethostbyname(socket.gethostname())
+        sdp_patched = pc.localDescription.sdp.replace(container_ip, "127.0.0.1")
+        
+        return web.json_response({
+            "sdp": sdp_patched,
+            "type": pc.localDescription.type
+        })
+    
+    # Standard behavior for Ubuntu (Production)
     return web.json_response({
         "sdp": pc.localDescription.sdp,
         "type": pc.localDescription.type
